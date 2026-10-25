@@ -18,24 +18,18 @@
 
 ## 📌 Overview
 
-Offline PHP runtime configuration (php.ini / PHP-FPM) hardening auditor
+OPhpIni is an offline, read-only auditor for PHP runtime configuration. It parses php.ini, conf.d directories, PHP-FPM pools, .user.ini and .htaccess files and resolves effective directive values across the PHP load order. Findings are scored and mapped to CWE and OWASP references.
 
 ---
 
 ## ✨ Features
 
-- Offline, read-only parser for php.ini and conf.d/*.ini (sections, quoting, constants, booleans, size suffixes)
-- Effective-value resolution across the PHP load order (php.ini → conf.d sorted → FPM pool → .user.ini/.htaccess)
-- Auto-discovery of /etc/php/<ver>/{fpm,cli,apache2,cgi}, /etc/php.ini, /etc/php.d, /usr/local/etc/php, php-fpm.d
-- 80+ rules: error exposure, RFI, disable_functions gap scoring, open_basedir, uploads, session cookie flags, sid entropy, cgi.fix_pathinfo, enable_dl, prepend files, DoS limits, assertions, OPcache, phar, FFI, Xdebug, deprecated/removed directives per PHP version
-- PHP-FPM auditor: TCP listen exposure, socket modes, root workers, limit_extensions, pm limits, status / ping paths, clear_env, secrets in env[], admin overrides
-- .user.ini / .htaccess override auditor with INI changeable-mode awareness (SYSTEM / PERDIR / ALL)
-- CWE + OWASP mapping, severity, remediation per rule
-- Weighted 0–100 score and A+…F grade
-- Hardened php.ini / pool template generator
-- Export TXT / Markdown / JSON / CSV / SARIF 2.1.0
-- CI mode: --min-severity, --fail-on (exit 2)
-- Self-test --demo (weak vs hardened, exit 3 on miss)
+- Offline parser for php.ini and conf.d/*.ini with effective-value resolution across the load order
+- Auto-discovery of PHP installation directories under a configurable root
+- 80+ rules covering error exposure, RFI, uploads, session cookies, OPcache, FFI and more
+- PHP-FPM auditor for listen exposure, socket modes, worker users and pm limits
+- CWE/OWASP mapping with severity profiles for production and development
+- Effective-value printing, remediation overlays, hardened templates and multiple export formats
 
 ---
 
@@ -49,7 +43,10 @@ Offline PHP runtime configuration (php.ini / PHP-FPM) hardening auditor
 ## 🚀 Usage
 
 ```bash
-./OPhpIni
+./OPhpIni --scan --root /
+./OPhpIni --ini /etc/php/8.3/fpm/php.ini --fpm /etc/php/8.3/fpm/php-fpm.conf
+./OPhpIni --ini php.ini --format json -o report.json
+./OPhpIni --help
 ```
 
 ---
